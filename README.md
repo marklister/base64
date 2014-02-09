@@ -1,6 +1,6 @@
 #Base64
 
-### Yet another Base64 encoder!
+### Yet another Base64 encoder /decoder!
 
 This one is public domain, idiomatic scala, and need not add a dependancy to 
 your project.  Just copy the one source file!  It's less than 25 lines.
