@@ -20,4 +20,12 @@ import org.specs2.mutable.Specification
       }       
     }
 
+// Decoder tests
+
+"aG9nZXBpeW9mb29iYXI=" should {
+      "decode as hogepiyofoobar" in {
+        "aG9nZXBpeW9mb29iYXI=".toByteArray must beEqualTo("hogepiyofoobar".getBytes)
+      }       
+    }
+
   }
