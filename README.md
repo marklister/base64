@@ -5,16 +5,20 @@
 This one is public domain, idiomatic scala, and need not add a dependancy to 
 your project.  Just copy the one source file!  It's less than 25 lines.
 
-There is an implict classes:
+There are implict classes:
+
 Encoder: `Array[Byte]=> String`
+
 Decoder: `String => Array[Byte]`
 
 Encoder's implict "trigger" is `toBase64`
+
 Decoder's implicit "trigger" is `toByteArray`
 
 You need to import 
 
 `io.github.marklister.base64.Base64.Encoder`
+
 `io.github.marklister.base64.Base64.Decoder`
 
 or `io.github.marklister.base64.Base64._`
