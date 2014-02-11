@@ -1,4 +1,5 @@
 package io.github.marklister.base64
+import scala.annotation.tailrec
 
 /**
  * Base64 encoder
@@ -18,14 +19,15 @@ object Base64 {
 
   implicit class Encoder(b: Array[Byte]) {
     def toBase64: String = {
-
-      def enc(z: BigInt): String =
-        if (z == 0) ""
-        else enc(z / 64) :+ encodeTable((z % 64).toInt)
+      @tailrec
+      def enc(z: BigInt,acc:Seq[Char]): Seq[Char] =
+        if (z == 0) acc
+        else  enc(z / 64,encodeTable((z % 64).toInt)+:acc)
 
       val pad = (3 - b.length % 3) % 3
       val bi = BigInt(basic ++ b ++ zero.take(pad))
-      enc(bi).drop(4).dropRight(pad) + "=" * pad
+      
+      (enc(bi,Seq.empty).drop(4).dropRight(pad) :+ "=" * pad).mkString
     }
   }
   implicit class Decoder(s: String) {
