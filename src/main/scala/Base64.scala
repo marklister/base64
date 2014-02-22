@@ -10,6 +10,9 @@ import scala.annotation.tailrec
  * This applies worldwide. In some countries this may not be legally possible;
  * if so: I grant anyone the right to use this work for any purpose, without any
  * conditions, unless such conditions are required by law.
+ * 
+ * The repo for this Base64 encoder lives at  https://github.com/marklister/base64
+ * Please send your issues, suggestions and pull requests there.
  */
 
 object Base64 {
