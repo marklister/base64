@@ -1,28 +1,27 @@
 #Base64
 
-### Yet another Base64 encoder /decoder!
+### Yet another Base64 encoder / decoder!
 
-This one is public domain, idiomatic scala, and need not add a dependancy to 
-your project.  Just copy the one source file!  It's less than 25 lines.
+This one is 
+ + public domain, 
+ + has a natural API
+ + idiomatic scala, and 
+ + need not add a dependancy to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/src/main/scala/Base64.scala) to your project!  It's around 33 lines of code.
+ 
+#### Natural API
 
-There are implict classes:
+You simply invoke `toBase64` on an `Array[Byte]` or
 
-Encoder: `Array[Byte]=> String`
+`toByteArray` on a `String` containing a Base64 representation.
 
-Decoder: `String => Array[Byte]`
-
-Encoder's implict "trigger" is `toBase64`
-
-Decoder's implicit "trigger" is `toByteArray`
-
-You need to import 
+####Imports
 
 `io.github.marklister.base64.Base64.Encoder`
 
 `io.github.marklister.base64.Base64.Decoder`
 
-or `io.github.marklister.base64.Base64._`
 
+####REPL example
 
 ```scala
 [info] Starting scala interpreter...
