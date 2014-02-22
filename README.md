@@ -3,6 +3,7 @@
 ### Yet another Base64 encoder / decoder!
 
 This one is 
+ + really small
  + public domain, 
  + has a natural API
  + idiomatic scala, and 
