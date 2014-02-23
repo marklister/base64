@@ -30,6 +30,7 @@ object Base64 {
       (enc(bi,Seq.empty).drop(4).dropRight(pad) :+ "=" * pad).mkString
     }
   }
+
   implicit class Decoder(s: String) {
     lazy val cleanS = s.reverse.dropWhile(_ == '=').reverse
     lazy val pad = s.length - cleanS.length
