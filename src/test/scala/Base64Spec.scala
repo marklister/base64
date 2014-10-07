@@ -27,5 +27,9 @@ import org.specs2.mutable.Specification
         "aG9nZXBpeW9mb29iYXI=".toByteArray must beEqualTo("hogepiyofoobar".getBytes)
       }       
     }
-
+"+/+/+/+/ base64" should {
+  " be equivalent to -_-_-_-_ base64Url" in {
+    "+/+/+/+/".toByteArray.sameElements(("-_-_-_-_").toByteArray(base64Url)) must beTrue
+  }
+}
   }
