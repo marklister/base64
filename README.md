@@ -47,7 +47,8 @@ res2: Boolean = true
 
 You can switch base64 encoding by exposing the encoding as an implicit parameter:
 
-```scala> "+/+/+/+/".toByteArray
+```
+   scala> "+/+/+/+/".toByteArray
    res5: Array[Byte] = Array(-5, -1, -65, -5, -1, -65)
 
    scala> implicit val encoding = io.github.marklister.base64.Base64.base64Url
@@ -59,7 +60,9 @@ You can switch base64 encoding by exposing the encoding as an implicit parameter
 
 And with the Base64 object already imported this simplifies to:
 
-```   implicit val encoding = base64Url```
+```
+implicit val encoding = base64Url
+```
 
 ####Mix encodings
 
