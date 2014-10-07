@@ -32,4 +32,15 @@ import org.specs2.mutable.Specification
     "+/+/+/+/".toByteArray.sameElements(("-_-_-_-_").toByteArray(base64Url)) must beTrue
   }
 }
+
+    //RFC 4648    Test vectors
+
+    "0x14fb9c03d97e" should {
+      "encode as F      P      u      c        A      9      l      +" in {
+        BigInt("14fb9c03d97e",16).toByteArray.toBase64 must beEqualTo("FPucA9l+")
+      }
+    }
+
+
+
   }
