@@ -4,10 +4,10 @@
 
 This one is 
  + really small
- + public domain, 
+ + liberal licence (BSD)*,
  + has a natural API
  + idiomatic scala, and 
- + need not add a dependancy to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
+ + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
  
 #### Natural API
 
@@ -17,10 +17,18 @@ You simply invoke `toBase64` on an `Array[Byte]` or
 
 ####Imports
 
-`io.github.marklister.base64.Base64.Encoder`
+`com.github.marklister.base64.Base64.Encoder`
 
-`io.github.marklister.base64.Base64.Decoder`
+`com.github.marklister.base64.Base64.Decoder`
 
+or the wildcard:
+
+`com.github.marklister.base64.Base64.Decoder`
+
+####Efficiency
+
+This implementation chooses simplicity over efficiency. If you are doing heavy duty encoding or decoding you might
+want to look around for something more industrial.
 
 ####REPL example
 
@@ -29,7 +37,7 @@ You simply invoke `toBase64` on an `Array[Byte]` or
     scala
     [info] Starting scala interpreter...
     [info] 
-    import io.github.marklister.base64.Base64._
+    import com.github.marklister.base64.Base64._
     Welcome to Scala version 2.10.2 (OpenJDK Server VM, Java 1.7.0_51).
     Type in expressions to have them evaluated.
     Type :help for more information.
@@ -72,3 +80,7 @@ It's trivial to create your own encoding.
 ####Mix encodings
 
 If you need to mix encodings then have a look at the tests for an example.
+
+* At one stage this code was released as public domain but there was some discussion about the validity of public
+  domain licences and they don't work on Maven Central.  So now it's BSD.  If you need some other licence then raise an
+  issue.

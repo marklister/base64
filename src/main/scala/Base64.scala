@@ -1,14 +1,12 @@
-package io.github.marklister.base64
+package com.github.marklister.base64
 
 /**
  * Base64 encoder
  * @author Mark Lister
- *         (c) Mark Lister 2014
+ * This software is distributed under the 2-Clause BSD license. See the
+ * LICENSE file in the root of the repository.
  *
- *         I, the copyright holder of this work, release this work into the public domain.
- *         This applies worldwide. In some countries this may not be legally possible;
- *         if so: I grant anyone the right to use this work for any purpose, without any
- *         conditions, unless such conditions are required by law.
+ * Copyright (c) 2014 Mark Lister
  *
  *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
  *         Please send your issues, suggestions and pull requests there.
@@ -18,7 +16,11 @@ package io.github.marklister.base64
 object Base64 {
 
   class B64Scheme(val encodeTable: IndexedSeq[Char]) {
-    lazy val decodeTable = collection.immutable.TreeMap(encodeTable.zipWithIndex: _*)
+    lazy val decodeTable = {
+      val d = new Array[Int](128)
+      encodeTable.zipWithIndex.foreach(x => d(x._1.toInt) = x._2)
+      d
+    }
   }
 
   lazy val base64 = new B64Scheme(('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/'))
@@ -31,8 +33,8 @@ object Base64 {
     def toBase64(implicit scheme: B64Scheme = base64): String = {
       def sixBits(x: Array[Byte]): Seq[Int] = {
         val a = (x(0) & 0xfc) >> 2
-        val b = ((x(0) & 0x3) << 4) + ((x(1) & 0xf0) >> 4)
-        val c = ((x(1) & 0xf) << 2) + ((x(2) & 0xc0) >> 6)
+        val b = ((x(0) & 0x3) << 4) | ((x(1) & 0xf0) >> 4)
+        val c = ((x(1) & 0xf) << 2) | ((x(2) & 0xc0) >> 6)
         val d = (x(2)) & 0x3f
         Seq(a, b, c, d)
       }
@@ -51,8 +53,8 @@ object Base64 {
 
     def toByteArray(implicit scheme: B64Scheme = base64): Array[Byte] = {
       def threeBytes(s: Seq[Char]): Array[Byte] = {
-        val r = s.map(scheme.decodeTable(_)).foldLeft(0)((a,b)=>(a << 6) +b)
-        java.nio.ByteBuffer.allocate(8).putLong(r).array().takeRight(3)
+        val r = s.map(scheme.decodeTable(_)).foldLeft(0)((a, b) => (a << 6) | b)
+        Array((r >> 16).toByte, (r >> 8).toByte, r.toByte)
       }
       if (pad > 2 || s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String:" + s)
       if (!cleanS.forall(scheme.encodeTable.contains(_))) throw new java.lang.IllegalArgumentException("Invalid Base64 String:" + s)

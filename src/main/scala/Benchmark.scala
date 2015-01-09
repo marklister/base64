@@ -1,5 +1,5 @@
 object Benchmark {
-  import io.github.marklister.base64.Base64._
+  import com.github.marklister.base64.Base64._
 
   def main (args:Array[String] ): Unit ={
     println
@@ -292,11 +292,11 @@ object Benchmark {
     val res2=test.toBase64
     System.gc()
     val start=new java.util.Date().getTime
-    for(x<- 1 to 10) {test.toBase64
+    for(x<- 1 to 100) {test.toBase64
       print(".")}
     val end=new java.util.Date().getTime
     println ("Encode microbenchmank:" )
-    println ("Encode size:"+ test.size*10+" bytes")
+    println ("Encode size:"+ test.size*100+" bytes")
     println ("Encode time:" +(end-start)+" ms")
     println()
 
@@ -304,13 +304,44 @@ object Benchmark {
     test2.toByteArray
     System.gc()
     val start2=new java.util.Date().getTime
-    for(x<- 1 to 10) {test2.toByteArray
+    for(x<- 1 to 100) {test2.toByteArray
       print(".")}
     val end2=new java.util.Date().getTime
     println("Decode microbenchmark")
-    println ("Decode size:"+ test2.size*10+" chars")
+    println ("Decode size:"+ test2.size*100+" chars")
     println ("Decode time:" +(end2-start2)+" ms")
     println()
+    ///////////////////////////
 
+    //Uncomment this code to compare with Apache.  Apache is about 40 times faster.
+  /*  import org.apache.commons.codec.binary.Base64._
+
+    val res11= encodeBase64(test)
+    val res12= encodeBase64(test)
+
+    System.gc()
+    val start3=new java.util.Date().getTime
+    for(x<- 1 to 100) {encodeBase64(test)
+      print(".")}
+    val end3=new java.util.Date().getTime
+    println ("Apache Encode microbenchmank:" )
+    println ("Encode size:"+ test.size*100+" bytes")
+    println ("Encode time:" +(end3-start3)+" ms")
+    println()
+
+    val test21=encodeBase64(test)
+    decodeBase64(test21)
+
+    System.gc()
+    val start4=new java.util.Date().getTime
+    for(x<- 1 to 100) {decodeBase64(test21)
+    print(".")}
+    val end4=new java.util.Date().getTime
+    println("Apache Decode microbenchmark")
+    println ("Decode size:"+ test21.size*100+" chars")
+    println ("Decode time:" +(end4-start4)+" ms")
+    println()
+
+*/
   }
 }
