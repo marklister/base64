@@ -1,7 +1,9 @@
+package com.github.marklister.base64
+
 object Benchmark {
   import com.github.marklister.base64.Base64._
 
-  def main (args:Array[String] ): Unit ={
+  def run (args:Array[String] ): Unit ={
     println
     println("Microbenchmark\n" +
             "===============")
@@ -288,15 +290,21 @@ object Benchmark {
         |
         |
       """.stripMargin.getBytes()
+
+    val repeat=5
+
+    println("start")
     val res1=test.toBase64
+    println("start1")
     val res2=test.toBase64
-    System.gc()
+    println("start2")
+    //System.gc()
     val start=new java.util.Date().getTime
-    for(x<- 1 to 100) {test.toBase64
+    for(x<- 1 to repeat) {test.toBase64
       print(".")}
     val end=new java.util.Date().getTime
     println ("Encode microbenchmank:" )
-    println ("Encode size:"+ test.size*100+" bytes")
+    println ("Encode size:"+ test.size*repeat+" bytes")
     println ("Encode time:" +(end-start)+" ms")
     println()
 
@@ -304,11 +312,11 @@ object Benchmark {
     test2.toByteArray
     System.gc()
     val start2=new java.util.Date().getTime
-    for(x<- 1 to 100) {test2.toByteArray
+    for(x<- 1 to repeat) {test2.toByteArray
       print(".")}
     val end2=new java.util.Date().getTime
     println("Decode microbenchmark")
-    println ("Decode size:"+ test2.size*100+" chars")
+    println ("Decode size:"+ test2.size*repeat+" chars")
     println ("Decode time:" +(end2-start2)+" ms")
     println()
     ///////////////////////////

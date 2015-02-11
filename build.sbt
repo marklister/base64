@@ -1,40 +1,56 @@
-name := "base64"
+name := "base64 root project"
 
-libraryDependencies += "com.lihaoyi" %% "utest" % "0.2.4"
+scalaVersion:="2.11.5"
 
-testFrameworks += new TestFramework("utest.runner.JvmFramework")
+lazy val root = project.in(file("."))
+  .aggregate(base64JS, base64JVM)
+  .settings(
+  publish := {},
+  publishLocal := {},
+  crossScalaVersions := Seq("2.11.5", "2.10.4"),
+  scalaJSStage in Global := FastOptStage  //  Benchmark runs so slow it looks like it's hung if you remove this
+)
 
-//libraryDependencies += "commons-codec" % "commons-codec" % "1.9" //only for microbenchmark  you can get rid of this
+lazy val base64 = crossProject.in(file(".")).
+  settings(
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0",
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    scalaVersion := "2.11.5",
+    crossScalaVersions := Seq("2.11.5", "2.10.4"),
+    //sourceDirectories in Compile += new File("./shared/src/"),
+    name := "Base64",
+    organization :="com.github.marklister",
+    version := "v0.1",
+    scalaVersion := "2.11.5",
+    homepage := Some(url("https://github.com/marklister/base64")),
+    startYear := Some(2013),
+    description := "Tiny, idiomatic but not fast base64 implementation",
+    licenses += ("BSD Simplified", url("http://opensource.org/licenses/BSD-SIMPLIFIED")),
 
+    pomExtra := (
+      <scm>
+        <url>git@github.com:marklister/base64.git</url>
+        <connection>scm:git:git@github.com:marklister/base64.git</connection>
+      </scm>
+        <developers>
+          <developer>
+            <id>marklister</id>
+            <name>Mark Lister</name>
+            <url>https://github.com/marklister</url>
+          </developer>
+        </developers>),
+    scalacOptions in (Compile, doc) ++= Opts.doc.title("Base64"),
+    scalacOptions in (Compile, doc) ++= Seq("-implicits")
+  )
+  .settings(bintraySettings:_*)  //REMOVE FROM PUBLISHED build.sbt
 
-initialCommands in console := """
-  import io.github.marklister.base64.Base64._
-  """
+  .jvmSettings(
+    crossScalaVersions := Seq("2.11.5", "2.10.4")
+  )
+  .jsSettings(
+    crossScalaVersions := Seq("2.11.5", "2.10.4"),
+      jsDependencies += RuntimeDOM //Forces Phantomjs -- Node exits with code 1...
+  )
 
-version := "0.1.0"
-
-scalaVersion := "2.11.4"
-
-crossScalaVersions := Seq("2.11.4","2.10.4")
-
-homepage := Some(url("https://github.com/marklister/product-collections"))
-
-startYear := Some(2013)
-
-description := "Tiny simple idiomatic Base64 encoder and decoder"
-
-licenses += ("BSD Simplified", url("http://opensource.org/licenses/BSD-SIMPLIFIED"))
-
-pomExtra := (
-   <scm>
-    <url>git@github.com:marklister/base64.git</url>
-    <connection>scm:git:git@github.com:marklister/base64.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>marklister</id>
-      <name>Mark Lister</name>
-      <url>https://github.com/marklister</url>
-    </developer>
-  </developers>)
-
+lazy val base64JVM = base64.jvm
+lazy val base64JS = base64.js

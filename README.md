@@ -4,11 +4,23 @@
 
 This one is 
  + really small
+ + not very efficient
  + liberal licence (BSD)*,
  + has a natural API
  + idiomatic scala, and 
  + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
- 
+
+#### Getting Started
+
+Using SBT:
+```scala
+     libraryDependencies += "com.github.marklister" %% "base64" % "0.1"
+```
+or for scala-js
+```scala
+     libraryDependencies += "com.github.marklister" %%% "base64" % "0.1"
+```
+
 #### Natural API
 
 You simply invoke `toBase64` on an `Array[Byte]` or
@@ -23,7 +35,7 @@ You simply invoke `toBase64` on an `Array[Byte]` or
 
 or the wildcard:
 
-`com.github.marklister.base64.Base64.Decoder`
+`com.github.marklister.base64.Base64._`
 
 ####Efficiency
 

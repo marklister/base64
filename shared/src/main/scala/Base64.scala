@@ -6,7 +6,7 @@ package com.github.marklister.base64
  * This software is distributed under the 2-Clause BSD license. See the
  * LICENSE file in the root of the repository.
  *
- * Copyright (c) 2014 Mark Lister
+ * Copyright (c) 2014 - 2015 Mark Lister
  *
  *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
  *         Please send your issues, suggestions and pull requests there.
