@@ -4,8 +4,7 @@ object Benchmark {
   import com.github.marklister.base64.Base64._
 
   def run (args:Array[String] ): Unit ={
-    println
-    println("Microbenchmark\n" +
+    Console.out.println("Microbenchmark\n" +
             "===============")
 
     val test=
@@ -293,32 +292,26 @@ object Benchmark {
 
     val repeat=5
 
-    println("start")
-    val res1=test.toBase64
-    println("start1")
-    val res2=test.toBase64
-    println("start2")
-    //System.gc()
+
     val start=new java.util.Date().getTime
     for(x<- 1 to repeat) {test.toBase64
-      print(".")}
+      Console.out.print(".")}
     val end=new java.util.Date().getTime
-    println ("Encode microbenchmank:" )
-    println ("Encode size:"+ test.size*repeat+" bytes")
-    println ("Encode time:" +(end-start)+" ms")
-    println()
+    Console.out.println ("Encode microbenchmank:" )
+    Console.out.println ("Encode size:"+ test.size*repeat+" bytes")
+    Console.out.println ("Encode time:" +(end-start)+" ms")
+    Console.out.println()
 
     val test2=test.toBase64
     test2.toByteArray
-    System.gc()
     val start2=new java.util.Date().getTime
     for(x<- 1 to repeat) {test2.toByteArray
-      print(".")}
+      Console.out.print(".")}
     val end2=new java.util.Date().getTime
-    println("Decode microbenchmark")
-    println ("Decode size:"+ test2.size*repeat+" chars")
-    println ("Decode time:" +(end2-start2)+" ms")
-    println()
+    Console.out.println("Decode microbenchmark")
+    Console.out.println ("Decode size:"+ test2.size*repeat+" chars")
+    Console.out.println ("Decode time:" +(end2-start2)+" ms")
+    Console.out.println()
     ///////////////////////////
 
     //Uncomment this code to compare with Apache.  Apache is about 40 times faster.

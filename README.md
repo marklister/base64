@@ -14,11 +14,11 @@ This one is
 
 Using SBT:
 ```scala
-     libraryDependencies += "com.github.marklister" %% "base64" % "0.1"
+     libraryDependencies += "com.github.marklister" %% "base64" % "0.1.1"
 ```
 or for scala-js
 ```scala
-     libraryDependencies += "com.github.marklister" %%% "base64" % "0.1"
+     libraryDependencies += "com.github.marklister" %%% "base64" % "0.1.1"
 ```
 
 #### Natural API
