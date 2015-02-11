@@ -8,7 +8,7 @@ This one is
  + liberal licence (BSD)*,
  + has a natural API
  + idiomatic scala, and 
- + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
+ + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/shared/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
 
 #### Getting Started
 
