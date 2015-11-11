@@ -297,10 +297,11 @@ object Benchmark {
     for(x<- 1 to repeat) {test.toBase64
       Console.out.print(".")}
     val end=new java.util.Date().getTime
-    Console.out.println ("Encode microbenchmank:" )
+    Console.out.println ("Encode microbenchmark:" )
     Console.out.println ("Encode size:"+ test.size*repeat+" bytes")
     Console.out.println ("Encode time:" +(end-start)+" ms")
-    Console.out.println()
+    Console.out.println("Don't run this on Rhino -- it's very slow.")
+    Console.out.println
 
     val test2=test.toBase64
     test2.toByteArray

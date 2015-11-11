@@ -17,12 +17,12 @@ import scala.collection.immutable.HashMap
 
 object Base64 {
   private[this] val zero = Array(0, 0).map(_.toByte)
-  class B64Scheme(val encodeTable: IndexedSeq[Char]) {
+  class B64Scheme(val encodeTable: IndexedSeq[Char], val strictPadding:Boolean=true) {
     lazy val decodeTable = HashMap(encodeTable.zipWithIndex: _ *)
   }
 
   lazy val base64 = new B64Scheme(('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/'))
-  lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'))
+  lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'),false)
 
   implicit class Encoder(b: Array[Byte]) {
 
@@ -54,7 +54,8 @@ object Base64 {
         val r = s.map(scheme.decodeTable(_)).foldLeft(0)((a, b) => (a << 6) | b)
         Array((r >> 16).toByte, (r >> 8).toByte, r.toByte)
       }
-      if (pad > 2 || s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String:" + s)
+      if (pad > 2) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding)" + s)
+      if (scheme.strictPadding && s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding)" + s)
       try {
         (cleanS + "A" * pad)
           .grouped(4)
