@@ -1,6 +1,6 @@
 name := "base64 root project"
 
-scalaVersion:="2.11.5"
+scalaVersion:="2.11.7"
 
 lazy val root = project.in(file("."))
   .aggregate(base64JS, base64JVM)
@@ -13,12 +13,11 @@ lazy val base64 = crossProject.in(file(".")).
   settings(
     libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0",
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    scalaVersion := "2.11.5",
-    crossScalaVersions := Seq("2.11.5", "2.10.4"),
+    scalaVersion := "2.11.7",
+    crossScalaVersions := Seq("2.11.7", "2.10.5"),
     name := "Base64",
     organization :="com.github.marklister",
-    version := "0.1.1",
-    scalaVersion := "2.11.5",
+    version := "0.1.2",
     homepage := Some(url("https://github.com/marklister/base64")),
     startYear := Some(2013),
     description := "Tiny, idiomatic but not fast base64 implementation",
