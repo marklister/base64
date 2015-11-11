@@ -55,7 +55,7 @@ object Base64 {
         Array((r >> 16).toByte, (r >> 8).toByte, r.toByte)
       }
       if (pad > 2) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding)" + s)
-      if (scheme.strictPadding && s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding)" + s)
+      if (scheme.strictPadding && s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (padding problem)" + s)
       try {
         (cleanS + "A" * pad)
           .grouped(4)
@@ -63,7 +63,7 @@ object Base64 {
           .flatten
           .toArray
           .dropRight(pad)
-      } catch {case e:NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String:" + s) }
+      } catch {case e:NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String: (invalid character)"  + s) }
     }
   }
 
