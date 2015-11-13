@@ -6,24 +6,26 @@ This one is
  + really small
  + not very efficient
  + liberal licence (BSD)*,
- + has a natural API
+ + simple API
  + idiomatic scala, and 
- + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/shared/src/main/scala/Base64.scala) to your project.  It's around 36 lines of code.
-
+ + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/shared/src/main/scala/Base64.scala) to your project.
+ + Scala-js compatible
+ + No Dom required
+ 
 #### Getting Started
 
 Using SBT:
 ```scala
-     libraryDependencies += "com.github.marklister" %% "base64" % "0.1.1"
+     libraryDependencies += "com.github.marklister" %% "base64" % "0.2.0"
 ```
 or for scala-js
 ```scala
-     libraryDependencies += "com.github.marklister" %%% "base64" % "0.1.1"
+     libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.0"
 ```
 
-#### Natural API
+#### API
 
-You simply invoke `toBase64` on an `Array[Byte]` or
+Simply invoke `toBase64` on an `Array[Byte]` or
 
 `toByteArray` on a `String` containing a Base64 representation.
 
@@ -36,6 +38,31 @@ You simply invoke `toBase64` on an `Array[Byte]` or
 or the wildcard:
 
 `com.github.marklister.base64.Base64._`
+
+####Base64 Url
+
+Two encoding schemes are provided as default: `base64` and `base64Url`.  `base64` is the default one.  To select
+`base64Url`
+
+Using implicits -- just make the encode/decode scheme available via an implicit:
+ 
+ ```
+ scala
+ implicit val encoding = base64Url
+ ```
+ 
+ Or you can provide the scheme as an argument to `toByteArray` or `toBase64` eg `toBase64(base64Url)` or `toByteArray(base64)`
+  
+####Padding
+
+Padding is strict for the `base64` encode scheme and non-strict for `base64Url`
+
+To create a non strict scheme:
+
+```
+scala
+implicit val encoding = base64.copy(strictPadding=false)
+```
 
 ####Efficiency
 
@@ -65,33 +92,6 @@ want to look around for something more industrial.
 
 ```
 
-####Encoding: Base64 vs Base64url
-
-You can switch encoding by exposing the encoding as an implicit parameter:
-
-```
-    
-    scala> "+/+/+/+/".toByteArray //standard Base64
-    res5: Array[Byte] = Array(-5, -1, -65, -5, -1, -65)
-    
-    scala> implicit val encoding = io.github.marklister.base64.Base64.base64Url
-    encoding: io.github.marklister.base64.Base64.B64Scheme = io.github.marklister.base64.Base64$B64Scheme@9c5e61
-    
-    scala> res5.toBase64
-    res6: String = -_-_-_-_ //Base64-url
-```
-
-And with the Base64 object already imported this simplifies to:
-
-```
-    implicit val encoding = base64Url
-```
-
-It's trivial to create your own encoding.
-
-####Mix encodings
-
-If you need to mix encodings then have a look at the tests for an example.
 
 * At one stage this code was released as public domain but there was some discussion about the validity of public
   domain licences and they don't work on Maven Central.  So now it's BSD.  If you need some other licence then raise an
