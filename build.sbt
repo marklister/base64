@@ -6,10 +6,7 @@ scalaVersion := "2.11.7"
 
 lazy val root = project.in(file("."))
   .aggregate(JS, JVM)
-  .settings(
-    publish := {},
-    publishLocal := {}
-  )
+  .settings()
 
 lazy val base64 = crossProject.in(file(".")).
   settings(
@@ -40,8 +37,7 @@ lazy val base64 = crossProject.in(file(".")).
     scalacOptions in(Compile, doc) ++= Opts.doc.title("Base64"),
     scalacOptions in(Compile, doc) ++= Seq("-implicits")
   )
-  //.settings(bintraySettings:_*)  //REMOVE FROM PUBLISHED build.sbt
-
+  
   .jvmSettings(
   initialCommands in console := """import com.github.marklister.base64.Base64._"""
 )
