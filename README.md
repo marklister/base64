@@ -10,7 +10,8 @@ This one is
  + idiomatic scala, and 
  + need not add a dependency to your project.  Just copy the [one source file](https://github.com/marklister/base64/blob/master/shared/src/main/scala/Base64.scala) to your project.
  + Scala-js compatible
- + No Dom required
+ + no Dom required
+ + works on client or server 
  
 #### Getting Started
 
@@ -31,7 +32,8 @@ Simply invoke `toBase64` on an `Array[Byte]` or
 
 ####Imports
 
-`com.github.marklister.base64.Base64.Encoder`
+`com.github.marklister.base64.Base64.Encoder` (Array[Byte])
+`com.github.marklister.base64.Base64.Encoder` (Seq[Byte] / ArrayBuffer[Byte] etc)
 
 `com.github.marklister.base64.Base64.Decoder`
 
