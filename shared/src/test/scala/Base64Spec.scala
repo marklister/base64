@@ -60,6 +60,22 @@ object MyTestSuite extends TestSuite {
         assert(t._2.toByteArray sameElements (t._1.getBytes))
       }
     }
+
+    'testunpaddedDecode {
+      val testVectors = Seq("" -> "",
+        "f" -> "Zg==",
+        "fo" -> "Zm8=",
+        "foo" -> "Zm9v",
+        "foob" -> "Zm9vYg==",
+        "fooba" -> "Zm9vYmE=",
+        "foobar" -> "Zm9vYmFy"
+      )
+
+      for (t <- testVectors) {
+        //test decoding
+        assert(t._2.reverse.dropWhile(_=='=').reverse.toByteArray(base64Url) sameElements (t._1.getBytes))
+      }
+    }
   }
 }
 

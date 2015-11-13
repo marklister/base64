@@ -5,10 +5,10 @@ import scala.collection.immutable.HashMap
 /**
  * Base64 encoder
  * @author Mark Lister
- * This software is distributed under the 2-Clause BSD license. See the
- * LICENSE file in the root of the repository.
+ *         This software is distributed under the 2-Clause BSD license. See the
+ *         LICENSE file in the root of the repository.
  *
- * Copyright (c) 2014 - 2015 Mark Lister
+ *         Copyright (c) 2014 - 2015 Mark Lister
  *
  *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
  *         Please send your issues, suggestions and pull requests there.
@@ -17,12 +17,13 @@ import scala.collection.immutable.HashMap
 
 object Base64 {
   private[this] val zero = Array(0, 0).map(_.toByte)
-  class B64Scheme(val encodeTable: IndexedSeq[Char], val strictPadding:Boolean=true) {
+
+  case class B64Scheme(encodeTable: IndexedSeq[Char], strictPadding: Boolean = true) {
     lazy val decodeTable = HashMap(encodeTable.zipWithIndex: _ *)
   }
 
   lazy val base64 = new B64Scheme(('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/'))
-  lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'),false)
+  lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false)
 
   implicit class Encoder(b: Array[Byte]) {
 
@@ -48,22 +49,28 @@ object Base64 {
   implicit class Decoder(s: String) {
     lazy val cleanS = s.reverse.dropWhile(_ == '=').reverse
     lazy val pad = s.length - cleanS.length
+    lazy val computedPad = (4 - (cleanS.length % 4)) % 4
 
     def toByteArray(implicit scheme: B64Scheme = base64): Array[Byte] = {
       def threeBytes(s: String): Array[Byte] = {
         val r = s.map(scheme.decodeTable(_)).foldLeft(0)((a, b) => (a << 6) | b)
         Array((r >> 16).toByte, (r >> 8).toByte, r.toByte)
       }
-      if (pad > 2) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding)" + s)
-      if (scheme.strictPadding && s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (padding problem)" + s)
+      if (scheme.strictPadding) {
+        if (pad > 2) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding) " + s)
+        if (s.length % 4 != 0) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (padding problem) " + s)
+      }
+      if (computedPad == 3) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (string length) " + s)
       try {
-        (cleanS + "A" * pad)
+        (cleanS + "A" * computedPad)
           .grouped(4)
           .map(threeBytes)
           .flatten
           .toArray
-          .dropRight(pad)
-      } catch {case e:NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String: (invalid character)"  + s) }
+          .dropRight(computedPad)
+      } catch {
+        case e: NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String: (invalid character)" + e.getMessage +s)
+      }
     }
   }
 
