@@ -1,7 +1,6 @@
 package com.github.marklister.base64
 
 import scala.collection.immutable.HashMap
-
 /**
  * Base64 encoder
  * @author Mark Lister
@@ -25,25 +24,30 @@ object Base64 {
   lazy val base64 = new B64Scheme(('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/'))
   lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false)
 
-  implicit class Encoder(b: Array[Byte]) {
+  implicit class SeqEncoder(s: Seq[Byte]) {
 
-    lazy val pad = (3 - b.length % 3) % 3
+    lazy val pad = (3 - s.length % 3) % 3
 
     def toBase64(implicit scheme: B64Scheme = base64): String = {
-      def sixBits(x: Array[Byte]): Array[Int] = {
+      def sixBits(x: Seq[Byte]): Array[Int] = {
         val a = (x(0) & 0xfc) >> 2
         val b = ((x(0) & 0x3) << 4) | ((x(1) & 0xf0) >> 4)
         val c = ((x(1) & 0xf) << 2) | ((x(2) & 0xc0) >> 6)
         val d = (x(2)) & 0x3f
         Array(a, b, c, d)
       }
-      ((b ++ zero.take(pad)).grouped(3)
+      ((s ++ zero.take(pad)).grouped(3)
         .flatMap(sixBits)
         .map(scheme.encodeTable)
         .toArray
         .dropRight(pad) :+ "=" * pad)
         .mkString
     }
+  }
+
+  implicit class Encoder(b:Array[Byte]) {
+    lazy val encoder = new SeqEncoder(b)
+    def toBase64 (implicit scheme: B64Scheme = base64) = encoder.toBase64(scheme)
   }
 
   implicit class Decoder(s: String) {
