@@ -1,64 +1,77 @@
 package com.github.marklister.base64
 
-import scala.collection.immutable.HashMap
+import scala.collection.mutable.ArrayBuilder
+
 /**
- * Base64 encoder
- * @author Mark Lister
- *         This software is distributed under the 2-Clause BSD license. See the
- *         LICENSE file in the root of the repository.
- *
- *         Copyright (c) 2014 - 2015 Mark Lister
- *
- *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
- *         Please send your issues, suggestions and pull requests there.
- *
- */
+  * Base64 encoder
+  * @author Mark Lister
+  *         This software is distributed under the 2-Clause BSD license. See the
+  *         LICENSE file in the root of the repository.
+  *
+  *         Copyright (c) 2014 - 2015 Mark Lister
+  *
+  *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
+  *         Please send your issues, suggestions and pull requests there.
+  */
 
 object Base64 {
-  private[this] val zero = Array(0, 0).map(_.toByte)
 
-  case class B64Scheme(encodeTable: IndexedSeq[Char], strictPadding: Boolean = true) {
-    lazy val decodeTable = HashMap(encodeTable.zipWithIndex: _ *)
-  }
-
-  lazy val base64 = new B64Scheme(('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/'))
-  lazy val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false)
-
-  implicit class SeqEncoder(s: Seq[Byte]) {
-
-    lazy val pad = (3 - s.length % 3) % 3
-
-    def toBase64(implicit scheme: B64Scheme = base64): String = {
-      def sixBits(x: Seq[Byte]): Array[Int] = {
-        val a = (x(0) & 0xfc) >> 2
-        val b = ((x(0) & 0x3) << 4) | ((x(1) & 0xf0) >> 4)
-        val c = ((x(1) & 0xf) << 2) | ((x(2) & 0xc0) >> 6)
-        val d = (x(2)) & 0x3f
-        Array(a, b, c, d)
+  case class B64Scheme(encodeTable: Array[Char], strictPadding: Boolean = true) {
+    lazy val decodeTable = {
+      val b: Array[Int] = new Array[Int](256)
+      for (x <- encodeTable.zipWithIndex) {
+        b(x._1) = x._2.toInt
       }
-      ((s ++ zero.take(pad)).grouped(3)
-        .flatMap(sixBits)
-        .map(scheme.encodeTable)
-        .toArray
-        .dropRight(pad) :+ "=" * pad)
-        .mkString
+      b
     }
   }
 
-  implicit class Encoder(b:Array[Byte]) {
-    lazy val encoder = new SeqEncoder(b)
-    def toBase64 (implicit scheme: B64Scheme = base64) = encoder.toBase64(scheme)
+  val base64 = new B64Scheme((('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/')).toArray)
+  val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false)
+
+  implicit class SeqEncoder(s: Seq[Byte]) {
+    def toBase64(implicit scheme: B64Scheme = base64): String = Encoder(s.toArray).toBase64
+  }
+
+  implicit class Encoder(b: Array[Byte]) {
+    val r = new StringBuilder((b.length + 3) * 4 / 3)
+    lazy val pad = (3 - b.length % 3) % 3
+
+    def toBase64(implicit scheme: B64Scheme = base64): String = {
+      def sixBits(x: Byte, y: Byte, z: Byte): Unit = {
+        val zz = (x & 0xff) << 16 | (y & 0xff) << 8  | (z & 0xff)
+        r += scheme.encodeTable(zz >> 18)
+        r += scheme.encodeTable(zz >> 12 & 0x3f)
+        r += scheme.encodeTable(zz >> 6 & 0x3f)
+        r += scheme.encodeTable(zz & 0x3f)
+      }
+      for (p <- 0 until b.length - 2 by 3) {
+        sixBits(b(p), b(p + 1), b(p + 2))
+      }
+      pad match {
+        case 0 =>
+        case 1 => sixBits(b(b.length - 2), b(b.length - 1), 0)
+        case 2 => sixBits(b(b.length - 1), 0, 0)
+      }
+      r.length = (r.length - pad)
+      r ++= "=" * pad
+      r.toString()
+    }
   }
 
   implicit class Decoder(s: String) {
-    lazy val cleanS = s.reverse.dropWhile(_ == '=').reverse
+    lazy val cleanS = s.replaceAll("=+$", "")
     lazy val pad = s.length - cleanS.length
     lazy val computedPad = (4 - (cleanS.length % 4)) % 4
 
     def toByteArray(implicit scheme: B64Scheme = base64): Array[Byte] = {
-      def threeBytes(s: String): Array[Byte] = {
-        val r = s.map(scheme.decodeTable(_)).foldLeft(0)((a, b) => (a << 6) | b)
-        Array((r >> 16).toByte, (r >> 8).toByte, r.toByte)
+      val r = new ArrayBuilder.ofByte
+
+      def threeBytes(a: Int, b: Int, c: Int, d: Int): Unit = {
+        val i = a << 18 | b << 12 | c << 6 | d
+        r += ((i >> 16).toByte)
+        r += ((i >> 8).toByte)
+        r += (i.toByte)
       }
       if (scheme.strictPadding) {
         if (pad > 2) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (excessive padding) " + s)
@@ -66,16 +79,23 @@ object Base64 {
       }
       if (computedPad == 3) throw new java.lang.IllegalArgumentException("Invalid Base64 String: (string length) " + s)
       try {
-        (cleanS + "A" * computedPad)
-          .grouped(4)
-          .map(threeBytes)
-          .flatten
-          .toArray
-          .dropRight(computedPad)
+        val s = (cleanS + "A" * computedPad)
+        for (x <- 0 until s.length - 1 by 4) {
+          val i = scheme.decodeTable(s.charAt(x)) << 18 |
+            scheme.decodeTable(s.charAt(x + 1)) << 12 |
+            scheme.decodeTable(s.charAt(x + 2)) << 6 |
+            scheme.decodeTable(s.charAt(x + 3))
+          r += ((i >> 16).toByte)
+          r += ((i >> 8).toByte)
+          r += (i.toByte)
+        }
       } catch {
-        case e: NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String: (invalid character)" + e.getMessage +s)
+        case e: NoSuchElementException => throw new java.lang.IllegalArgumentException("Invalid Base64 String: (invalid character)" + e.getMessage + s)
       }
+      val res = r.result
+      res.slice(0, res.length - computedPad)
     }
+
   }
 
 }

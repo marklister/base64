@@ -4,7 +4,7 @@
 
 This one is 
  + really small
- + not very efficient
+ + not very efficient (the latest version is not too bad)
  + liberal licence (BSD)*,
  + simple API
  + idiomatic scala, and 
@@ -26,7 +26,7 @@ or for scala-js
 
 #### API
 
-Simply invoke `toBase64` on an `Array[Byte]` or
+Simply invoke `toBase64` on an `Array[Byte]`  or `Seq[Byte]` or `ArrayBuffer[Byte]` or
 
 `toByteArray` on a `String` containing a Base64 representation.
 
@@ -68,8 +68,9 @@ implicit val encoding = base64.copy(strictPadding=false)
 
 ####Efficiency
 
-This implementation chooses simplicity over efficiency. If you are doing heavy duty encoding or decoding you might
-want to look around for something more industrial.
+This implementation began life as a toy implementation that chose simplicity over efficiency.
+The advent of scalaJs meant that the library has a real world target and warranted
+me improving it's efficiency.  Version 0.2.1 improves efficiency greatly but it will never be blazingly fast with this code. 
 
 ####REPL example
 

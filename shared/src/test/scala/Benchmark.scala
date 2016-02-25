@@ -1,5 +1,7 @@
 package com.github.marklister.base64
 
+import java.nio.ByteBuffer
+
 object Benchmark {
   import com.github.marklister.base64.Base64._
 
@@ -290,29 +292,35 @@ object Benchmark {
         |
       """.stripMargin.getBytes()
 
-    val repeat=5
+    val repeat=500
 
 
     val start=new java.util.Date().getTime
     for(x<- 1 to repeat) {test.toBase64
-      Console.out.print(".")}
+      //Console.out.print(".")
+      }
     val end=new java.util.Date().getTime
     Console.out.println ("Encode microbenchmark:" )
     Console.out.println ("Encode size:"+ test.size*repeat+" bytes")
     Console.out.println ("Encode time:" +(end-start)+" ms")
-    Console.out.println("Don't run this on Rhino -- it's very slow.")
     Console.out.println
 
     val test2=test.toBase64
     test2.toByteArray
     val start2=new java.util.Date().getTime
     for(x<- 1 to repeat) {test2.toByteArray
-      Console.out.print(".")}
+      //Console.out.print(".")
+      }
     val end2=new java.util.Date().getTime
     Console.out.println("Decode microbenchmark")
     Console.out.println ("Decode size:"+ test2.size*repeat+" chars")
     Console.out.println ("Decode time:" +(end2-start2)+" ms")
     Console.out.println()
+
+
+
+
+
     ///////////////////////////
 
     //Uncomment this code to compare with Apache.  Apache is about 40 times faster.

@@ -13,10 +13,10 @@ lazy val base64 = crossProject.in(file(".")).
     libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.1",
     testFrameworks += new TestFramework("utest.runner.Framework"),
     scalaVersion := "2.11.7",
-    crossScalaVersions := Seq("2.11.7", "2.10.5"),
+    crossScalaVersions := Seq("2.11.7"),
     name := "Base64",
     organization := "com.github.marklister",
-    version := "0.2.0",
+    version := "0.2.1",
     homepage := Some(url("https://github.com/marklister/base64")),
     startYear := Some(2013),
     description := "Tiny, idiomatic but not fast base64 implementation",
@@ -42,7 +42,7 @@ lazy val base64 = crossProject.in(file(".")).
   initialCommands in console := """import com.github.marklister.base64.Base64._"""
 )
   .jsSettings(
-    scalaJSStage in Global := FastOptStage
+    scalaJSUseRhino in Global := false
   )
 
 lazy val JVM = base64.jvm
