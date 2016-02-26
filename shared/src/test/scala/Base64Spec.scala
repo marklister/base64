@@ -77,6 +77,38 @@ object MyTestSuite extends TestSuite {
         assert(t._2.reverse.dropWhile(_ == '=').reverse.toByteArray(base64Url) sameElements (t._1.getBytes))
       }
     }
+
+    'testBase64UrlPadding {
+      val testVectors = Seq("" -> "",
+        "f" -> "Zg%3D%3D",
+        "fo" -> "Zm8%3D",
+        "foo" -> "Zm9v",
+        "foob" -> "Zm9vYg%3D%3D",
+        "fooba" -> "Zm9vYmE%3D",
+        "foobar" -> "Zm9vYmFy"
+      )
+
+      for (t <- testVectors) {
+        //test encoding
+        assert(t._1.getBytes.toBase64(base64Url) == t._2)
+      }
+    }
+
+    'testBase64UrlDecoding {
+      val testVectors = Seq("" -> "",
+        "f" -> "Zg%3D%3D",
+        "fo" -> "Zm8%3D",
+        "foo" -> "Zm9v",
+        "foob" -> "Zm9vYg%3D%3D",
+        "fooba" -> "Zm9vYmE%3D",
+        "foobar" -> "Zm9vYmFy"
+      )
+
+      for (t <- testVectors) {
+        //test encoding
+        assert(t._2.toByteArray(base64Url) sameElements (t._1.getBytes))
+      }
+    }
   }
 }
 

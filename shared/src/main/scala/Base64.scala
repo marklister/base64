@@ -3,20 +3,22 @@ package com.github.marklister.base64
 import scala.collection.mutable.ArrayBuilder
 
 /**
-  * Base64 encoder
-  * @author Mark Lister
-  *         This software is distributed under the 2-Clause BSD license. See the
-  *         LICENSE file in the root of the repository.
-  *
-  *         Copyright (c) 2014 - 2015 Mark Lister
-  *
-  *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
-  *         Please send your issues, suggestions and pull requests there.
-  */
+ * Base64 encoder
+ * @author Mark Lister
+ *         This software is distributed under the 2-Clause BSD license. See the
+ *         LICENSE file in the root of the repository.
+ *
+ *         Copyright (c) 2014 - 2015 Mark Lister
+ *
+ *         The repo for this Base64 encoder lives at  https://github.com/marklister/base64
+ *         Please send your issues, suggestions and pull requests there.
+ */
 
 object Base64 {
 
-  case class B64Scheme(encodeTable: Array[Char], strictPadding: Boolean = true) {
+  case class B64Scheme(encodeTable: Array[Char], strictPadding: Boolean = true,
+                       postEncode: String => String = identity,
+                       preDecode: String => String = identity) {
     lazy val decodeTable = {
       val b: Array[Int] = new Array[Int](256)
       for (x <- encodeTable.zipWithIndex) {
@@ -27,7 +29,9 @@ object Base64 {
   }
 
   val base64 = new B64Scheme((('A' to 'Z') ++ ('a' to 'z') ++ ('0' to '9') ++ Seq('+', '/')).toArray)
-  val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false)
+  val base64Url = new B64Scheme(base64.encodeTable.dropRight(2) ++ Seq('-', '_'), false,
+    _.replaceAllLiterally("=", "%3D"),
+    _.replaceAllLiterally("%3D", "="))
 
   implicit class SeqEncoder(s: Seq[Byte]) {
     def toBase64(implicit scheme: B64Scheme = base64): String = Encoder(s.toArray).toBase64
@@ -39,7 +43,7 @@ object Base64 {
 
     def toBase64(implicit scheme: B64Scheme = base64): String = {
       def sixBits(x: Byte, y: Byte, z: Byte): Unit = {
-        val zz = (x & 0xff) << 16 | (y & 0xff) << 8  | (z & 0xff)
+        val zz = (x & 0xff) << 16 | (y & 0xff) << 8 | (z & 0xff)
         r += scheme.encodeTable(zz >> 18)
         r += scheme.encodeTable(zz >> 12 & 0x3f)
         r += scheme.encodeTable(zz >> 6 & 0x3f)
@@ -55,16 +59,17 @@ object Base64 {
       }
       r.length = (r.length - pad)
       r ++= "=" * pad
-      r.toString()
+      scheme.postEncode(r.toString())
     }
   }
 
   implicit class Decoder(s: String) {
-    lazy val cleanS = s.replaceAll("=+$", "")
-    lazy val pad = s.length - cleanS.length
-    lazy val computedPad = (4 - (cleanS.length % 4)) % 4
 
     def toByteArray(implicit scheme: B64Scheme = base64): Array[Byte] = {
+      val pre = scheme.preDecode(s)
+      val cleanS = pre.replaceAll("=+$", "")
+      val pad = pre.length - cleanS.length
+      val computedPad = (4 - (cleanS.length % 4)) % 4
       val r = new ArrayBuilder.ofByte
 
       def threeBytes(a: Int, b: Int, c: Int, d: Int): Unit = {
