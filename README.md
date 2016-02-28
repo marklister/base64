@@ -17,11 +17,11 @@ This one is
 
 Using SBT:
 ```scala
-     libraryDependencies += "com.github.marklister" %% "base64" % "0.2.1"
+     libraryDependencies += "com.github.marklister" %% "base64" % "0.2.2"
 ```
 or for scala-js
 ```scala
-     libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.1"
+     libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.2"
 ```
 
 #### API
