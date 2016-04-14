@@ -32,10 +32,9 @@ Simply invoke `toBase64` on an `Array[Byte]`  or `Seq[Byte]` or `ArrayBuffer[Byt
 
 ####Imports
 
-`com.github.marklister.base64.Base64.Encoder` 
-`com.github.marklister.base64.Base64.Encoder` 
+     import com.github.marklister.base64.Base64.Encoder 
+     import com.github.marklister.base64.Base64.Decoder
 
-`com.github.marklister.base64.Base64.Decoder`
 
 or the wildcard:
 
@@ -49,7 +48,6 @@ Two encoding schemes are provided as default: `base64` and `base64Url`.  `base64
 Using implicits -- just make the encode/decode scheme available via an implicit:
  
  ```
- scala
  implicit val encoding = base64Url
  ```
  
@@ -62,7 +60,6 @@ Padding is strict for the `base64` encode scheme and non-strict for `base64Url`
 To create a non strict scheme:
 
 ```
-scala
 implicit val encoding = base64.copy(strictPadding=false)
 ```
 
