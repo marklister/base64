@@ -16,11 +16,11 @@ This one is
 #### Getting Started
 
 Using SBT:
-```scala
+```
      libraryDependencies += "com.github.marklister" %% "base64" % "0.2.2"
 ```
 or for scala-js
-```scala
+```
      libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.2"
 ```
 
@@ -32,8 +32,8 @@ Simply invoke `toBase64` on an `Array[Byte]`  or `Seq[Byte]` or `ArrayBuffer[Byt
 
 ####Imports
 
-`com.github.marklister.base64.Base64.Encoder` (Array[Byte])
-`com.github.marklister.base64.Base64.Encoder` (Seq[Byte] / ArrayBuffer[Byte] etc)
+`com.github.marklister.base64.Base64.Encoder` 
+`com.github.marklister.base64.Base64.Encoder` 
 
 `com.github.marklister.base64.Base64.Decoder`
 
