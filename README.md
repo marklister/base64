@@ -70,7 +70,7 @@ implicit val encoding = base64.copy(strictPadding=false)
 
 This implementation began life as a toy implementation that chose simplicity over efficiency.
 The advent of scalaJs meant that the library has a real world target and warranted
-me improving it's efficiency.  Version 0.2.1 improves efficiency greatly but it will never be blazingly fast with this code. 
+improving its efficiency.  Version 0.2.1 improves efficiency greatly but some legacy inefficiencies remain. 
 
 ####REPL example
 
