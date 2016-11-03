@@ -16,12 +16,12 @@ This one is
 #### Getting Started
 
 Using SBT:
-```scala
-     libraryDependencies += "com.github.marklister" %% "base64" % "0.2.3"
+```
+     libraryDependencies += "com.github.marklister" %% "base64" % "0.2.2"
 ```
 or for scala-js
-```scala
-     libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.3"
+```
+     libraryDependencies += "com.github.marklister" %%% "base64" % "0.2.2"
 ```
 
 #### API
@@ -32,8 +32,8 @@ Simply invoke `toBase64` on an `Array[Byte]`  or `Seq[Byte]` or `ArrayBuffer[Byt
 
 ####Imports
 
-`com.github.marklister.base64.Base64.Encoder` (Array[Byte])
-`com.github.marklister.base64.Base64.Encoder` (Seq[Byte] / ArrayBuffer[Byte] etc)
+     import com.github.marklister.base64.Base64.Encoder 
+     import com.github.marklister.base64.Base64.Decoder
 
 `com.github.marklister.base64.Base64.Decoder`
 
@@ -70,7 +70,7 @@ implicit val encoding = base64.copy(strictPadding=false)
 
 This implementation began life as a toy implementation that chose simplicity over efficiency.
 The advent of scalaJs meant that the library has a real world target and warranted
-me improving it's efficiency.  Version 0.2.1 improves efficiency greatly but it will never be blazingly fast with this code. 
+improving its efficiency.  Version 0.2.1 improves efficiency greatly but some legacy inefficiencies remain. 
 
 ####REPL example
 
