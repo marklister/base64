@@ -1,6 +1,5 @@
 import com.github.marklister.base64.Base64._
 import utest._
-import utest.ExecutionContext.RunNow
 
 object MyTestSuite extends TestSuite {
 

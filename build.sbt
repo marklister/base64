@@ -2,7 +2,9 @@ import sbt.Keys._
 
 name := "base64 root project"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.12.0"
+
+crossScalaVersions := Seq("2.12.0","2.11.8")
 
 lazy val root = project.in(file("."))
   .aggregate(JS, JVM)
@@ -10,16 +12,16 @@ lazy val root = project.in(file("."))
 
 lazy val base64 = crossProject.in(file(".")).
   settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.1",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.4",
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    scalaVersion := "2.11.7",
-    crossScalaVersions := Seq("2.11.7"),
+    scalaVersion := "2.12.0",
+    crossScalaVersions := Seq("2.12.0","2.11.8"),
     name := "Base64",
     organization := "com.github.marklister",
-    version := "0.2.2",
+    version := "0.2.3",
     homepage := Some(url("https://github.com/marklister/base64")),
     startYear := Some(2013),
-    description := "Tiny, idiomatic but not fast base64 implementation",
+    description := "Small, idiomatic base64 implementation",
     licenses +=("BSD Simplified", url("http://opensource.org/licenses/BSD-SIMPLIFIED")),
 
     pomExtra := (
