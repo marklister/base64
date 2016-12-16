@@ -4,7 +4,7 @@ name := "base64 root project"
 
 scalaVersion := "2.12.0"
 
-crossScalaVersions := Seq("2.12.0","2.11.8")
+crossScalaVersions := Seq("2.12.0","2.11.8", "2.10.6")
 
 lazy val root = project.in(file("."))
   .aggregate(JS, JVM)
