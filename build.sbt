@@ -12,7 +12,7 @@ lazy val root = project.in(file("."))
 
 lazy val base64 = crossProject.in(file(".")).
   settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.4",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.4" % "test",
     testFrameworks += new TestFramework("utest.runner.Framework"),
     scalaVersion := "2.12.0",
     crossScalaVersions := Seq("2.12.0","2.11.8"),
