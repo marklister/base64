@@ -1,4 +1,4 @@
-#Base64
+# Base64
 
 ### Another Base64 encoder / decoder.
 
@@ -30,7 +30,7 @@ Simply invoke `toBase64` on an `Array[Byte]`  or `Seq[Byte]` or `ArrayBuffer[Byt
 
 `toByteArray` on a `String` containing a Base64 representation.
 
-####Imports
+#### Imports
 
 ```scala
 import com.github.marklister.base64.Base64.Encoder 
@@ -43,7 +43,7 @@ or use a wildcard:
 import com.github.marklister.base64.Base64._
 ```
 
-####Base64 Url
+#### Base64 Url
 
 Two encoding schemes are provided as default: `base64` and `base64Url`.  `base64` is the default one.  To select
 `base64Url`
@@ -56,7 +56,7 @@ implicit val encoding = base64Url
 
 Or you can provide the scheme as an argument to `toByteArray` or `toBase64` eg `toBase64(base64Url)` or `toByteArray(base64)`
 
-####Padding
+#### Padding
 
 Padding is strict for the `base64` encode scheme and non-strict for `base64Url`
 
@@ -66,13 +66,13 @@ To create a non strict scheme:
 implicit val encoding = base64.copy(strictPadding=false)
 ```
 
-####Efficiency
+#### Efficiency
 
 This implementation began life as a toy implementation that chose simplicity over efficiency.
 The advent of scalaJs meant that the library has a real world target and warranted
 improving its efficiency.  Version 0.2.1 improves efficiency greatly but some legacy inefficiencies remain. 
 
-####REPL example
+#### REPL example
 
 ```sbt
 [info] Starting scala interpreter...
