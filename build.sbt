@@ -2,9 +2,9 @@ import sbt.Keys._
 
 name := "base64 root project"
 
-scalaVersion := "2.12.0"
+scalaVersion := "2.12.4"
 
-crossScalaVersions := Seq("2.12.0","2.11.8", "2.10.6")
+crossScalaVersions := Seq("2.13.0-M2", "2.12.4", "2.11.11", "2.10.6")
 
 lazy val root = project.in(file("."))
   .aggregate(JS, JVM)
@@ -12,10 +12,10 @@ lazy val root = project.in(file("."))
 
 lazy val base64 = crossProject.in(file(".")).
   settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.4" % "test",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.5.4" % "test",
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    scalaVersion := "2.12.0",
-    crossScalaVersions := Seq("2.12.0","2.11.8"),
+    scalaVersion := "2.12.4",
+    crossScalaVersions := Seq("2.13.0-M2", "2.12.4", "2.11.11"),
     name := "Base64",
     organization := "com.github.marklister",
     version := "0.2.3",
@@ -39,13 +39,10 @@ lazy val base64 = crossProject.in(file(".")).
     scalacOptions in(Compile, doc) ++= Opts.doc.title("Base64"),
     scalacOptions in(Compile, doc) ++= Seq("-implicits")
   )
-  
+
   .jvmSettings(
   initialCommands in console := """import com.github.marklister.base64.Base64._"""
 )
-  .jsSettings(
-    scalaJSUseRhino in Global := false
-  )
 
 lazy val JVM = base64.jvm
 lazy val JS = base64.js
