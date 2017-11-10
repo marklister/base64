@@ -17,7 +17,7 @@ This one is
 
 Using SBT:
 ```sbt
-libraryDependencies += "com.github.marklister" %% "base64" % "0.2.3"
+libraryDependencies += "com.github.marklister" %% "base64" % "0.2.4"
 ```
 or for scala-js
 ```sbt
