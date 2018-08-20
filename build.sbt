@@ -1,21 +1,22 @@
 import sbt.Keys._
+import sbtcrossproject.crossProject
 
 name := "base64 root project"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 
-crossScalaVersions := Seq("2.13.0-M2", "2.12.4", "2.11.11", "2.10.6")
+crossScalaVersions := Seq("2.12.6", "2.11.12", "2.10.7")
 
 lazy val root = project.in(file("."))
   .aggregate(JS, JVM)
   .settings()
 
-lazy val base64 = crossProject.in(file(".")).
+lazy val base64 = crossProject(JVMPlatform, JSPlatform).in(file(".")).
   settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.5.4" % "test",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.4" % "test",
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    scalaVersion := "2.12.4",
-    crossScalaVersions := Seq("2.13.0-M2", "2.12.4", "2.11.11"),
+    scalaVersion := "2.12.6",
+    crossScalaVersions := Seq("2.12.6", "2.11.12"),
     name := "Base64",
     organization := "com.github.marklister",
     version := "0.2.4",
