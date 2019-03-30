@@ -43,7 +43,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform)
   )
   .nativeSettings(
     scalaVersion := "2.11.12",
-    crossScalaVersions := Seq("2.11.12"),
+    crossScalaVersions := Seq("2.11.12"),  //TODO +publish tries to publish n times.
     nativeLinkStubs := true
   )
 
