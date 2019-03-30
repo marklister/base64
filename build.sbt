@@ -7,7 +7,7 @@ lazy val root = project.in(file("."))
   .settings(commonSettings)
   .settings(skip in publish := true)
 
-lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+lazy val base64 = crossProject(JVMPlatform, JSPlatform/*, NativePlatform*/) // NativePlatform manually
   .crossType(CrossType.Full)
   .in(file("."))
   .settings(commonSettings)
