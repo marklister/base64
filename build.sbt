@@ -3,12 +3,13 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 name := "base64 root project"
 
 lazy val root = project.in(file("."))
-  .aggregate(base64.jvm,base64.js)
+  .aggregate(JVM, JS, Native)
   .settings(commonSettings)
   .settings(skip in publish := true)
 
-lazy val base64 = crossProject(JVMPlatform, JSPlatform)
-  .crossType(CrossType.Pure)
+lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform)
+  .crossType(CrossType.Full)
+  .in(file("."))
   .settings(commonSettings)
   .settings(
     libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.6" % "test",
@@ -40,8 +41,16 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform)
   .jvmSettings(
     initialCommands in console := """import com.github.marklister.base64.Base64._"""
   )
+  .nativeSettings(
+    scalaVersion := "2.11.12",
+    crossScalaVersions := Seq("2.11.12"),
+    nativeLinkStubs := true
+  )
 
 val commonSettings = Seq(
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.11.12",
   crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5")
 )
+lazy val JVM = base64.jvm
+lazy val JS = base64.js
+lazy val Native = base64.native
