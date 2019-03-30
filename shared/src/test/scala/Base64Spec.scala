@@ -1,7 +1,9 @@
+package com.github.marklister.base64
+
 import com.github.marklister.base64.Base64._
 import utest._
 
-object MyTestSuite extends TestSuite {
+object Base64TestSuite extends TestSuite {
 
   val tests = TestSuite {
 
