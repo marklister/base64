@@ -3,7 +3,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 name := "base64 root project"
 
 lazy val root = project.in(file("."))
-  .aggregate(JVM, JS/*, Native*/)
+  .aggregate(JVM, JS, Native)
   .settings(commonSettings)
   .settings(skip in publish := true)
 
@@ -16,7 +16,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
-    version := "0.2.5",
+    version := "0.2.6",
     homepage := Some(url("https://github.com/marklister/base64")),
     startYear := Some(2013),
     description := "Small, idiomatic base64 implementation",
@@ -52,5 +52,5 @@ val commonSettings = Seq(
   crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5")
 )
 lazy val JVM = base64.jvm
-lazy val JS = base64.js
+lazy val JS = base64.project js
 lazy val Native = base64.native
