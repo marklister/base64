@@ -3,7 +3,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 name := "base64 root project"
 
 lazy val root = project.in(file("."))
-  .aggregate(JVM, JS, Native)
+  .aggregate(JVM, JS/*, Native*/)
   .settings(commonSettings)
   .settings(skip in publish := true)
 
