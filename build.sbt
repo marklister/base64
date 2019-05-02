@@ -12,7 +12,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
   .in(file("."))
   .settings(commonSettings)
   .settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.6" % "test",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.7" % Test,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
