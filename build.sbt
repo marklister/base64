@@ -12,7 +12,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
   .in(file("."))
   .settings(commonSettings)
   .settings(
-    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.6" % "test",
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.6.7" % Test,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
@@ -49,7 +49,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
 
 val commonSettings = Seq(
   scalaVersion := "2.11.12",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-M5")
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1")
 )
 lazy val JVM = base64.jvm
 lazy val JS = base64.project js
