@@ -53,7 +53,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
 
 val commonSettings = Seq(
   scalaVersion := "2.11.12",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0-RC1")
+  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0")
 )
 lazy val JVM = base64.jvm
 lazy val JS = base64.project js
