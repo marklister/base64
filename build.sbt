@@ -13,10 +13,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
   .settings(commonSettings)
   .settings(
     libraryDependencies +=
-      (if (scalaVersion.value.startsWith("2.11"))
-         "com.lihaoyi" %%% "utest" % "0.6.8" % Test
-       else
-         "com.lihaoyi" %%% "utest" % "0.6.9" % Test),
+      "com.lihaoyi" %%% "utest" % "0.7.5" % Test,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
@@ -46,14 +43,14 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
     initialCommands in console := """import com.github.marklister.base64.Base64._"""
   )
   .nativeSettings(
-    scalaVersion := "2.11.12",
-    crossScalaVersions := Seq("2.11.12"),  //TODO +publish tries to publish n times.
+    scalaVersion := "2.12.12",
+    crossScalaVersions := Seq("2.12.12"),  //TODO +publish tries to publish n times.
     nativeLinkStubs := true
   )
 
 val commonSettings = Seq(
-  scalaVersion := "2.11.12",
-  crossScalaVersions := Seq("2.12.8", "2.11.12", "2.13.0")
+  scalaVersion := "2.12.12",
+  crossScalaVersions := Seq("2.12.12", "2.13.4")
 )
 lazy val JVM = base64.jvm
 lazy val JS = base64.project js
