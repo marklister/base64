@@ -17,24 +17,48 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
-    version := "0.2.7",
+    version := "0.3.0",
     homepage := Some(url("https://github.com/marklister/base64")),
     startYear := Some(2013),
     description := "Small, idiomatic base64 implementation",
     licenses += ("BSD Simplified", url("http://opensource.org/licenses/BSD-SIMPLIFIED")),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/marklister/base64"),
+        "scm:git:git@github.com:marklister/base64.git"
+      )
+    ),
+    developers := List(
+      Developer(
+        id = "marklister",
+        name = "Mark lister",
+        email = "mark.p.lister@gmail.com",
+        url = url("https://github.com/marklister")
+      )
+    ),
+    description := "Base64 encoder / decoder",
+    licenses := List("BSD" -> new URL("https://opensource.org/licenses/BSD-2-Clause")),
+    homepage := Some(url("https://github.com/marklister/base64")),
+    pomIncludeRepository := { _ => false },
+    publishTo := {
+      val nexus = "https://oss.sonatype.org/"
+      if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+      else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+    } ,
+    publishMavenStyle := true,
 
-    pomExtra := (
-      <scm>
-        <url>git@github.com:marklister/base64.git</url>
-        <connection>scm:git:git@github.com:marklister/base64.git</connection>
-      </scm>
-        <developers>
-          <developer>
-            <id>marklister</id>
-            <name>Mark Lister</name>
-            <url>https://github.com/marklister</url>
-          </developer>
-        </developers>),
+//    pomExtra := (
+//      <scm>
+//        <url>git@github.com:marklister/base64.git</url>
+//        <connection>scm:git:git@github.com:marklister/base64.git</connection>
+//      </scm>
+//        <developers>
+//          <developer>
+//            <id>marklister</id>
+//            <name>Mark Lister</name>
+//            <url>https://github.com/marklister</url>
+//          </developer>
+//        </developers>),
     scalacOptions in(Compile, doc) ++= Opts.doc.title("Base64"),
     scalacOptions in(Compile, doc) ++= Seq("-implicits")
   )
