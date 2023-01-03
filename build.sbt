@@ -2,10 +2,14 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 name := "base64 root project"
 
+val scala212 = "2.12.17"
+val scala213 = "2.13.10"
+val scala3 = "3.2.1"
+
 lazy val root = project.in(file("."))
   .aggregate(JVM, JS/*, Native*/)
   .settings(commonSettings)
-  .settings(skip in publish := true)
+  .settings(publish / skip := true)
 
 lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // NativePlatform manually
   .crossType(CrossType.Full)
@@ -13,7 +17,7 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
   .settings(commonSettings)
   .settings(
     libraryDependencies +=
-      "com.lihaoyi" %%% "utest" % "0.7.10" % Test,
+      "com.lihaoyi" %%% "utest" % "0.8.1" % Test,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     name := "Base64",
     organization := "com.github.marklister",
@@ -59,22 +63,23 @@ lazy val base64 = crossProject(JVMPlatform, JSPlatform, NativePlatform) // Nativ
 //            <url>https://github.com/marklister</url>
 //          </developer>
 //        </developers>),
-    scalacOptions in(Compile, doc) ++= Opts.doc.title("Base64"),
-    scalacOptions in(Compile, doc) ++= Seq("-implicits")
+    doc / scalacOptions ++= Opts.doc.title("Base64"),
+    Compile / scalacOptions ++= Opts.doc.title("Base64"),
+    Compile / scalacOptions --= Seq("-doc-title")
   )
 
   .jvmSettings(
-    initialCommands in console := """import com.github.marklister.base64.Base64._"""
+    console / initialCommands := """import com.github.marklister.base64.Base64._"""
   )
   .nativeSettings(
-    scalaVersion := "2.12.14",
-    crossScalaVersions := Seq("2.12.14"),  //TODO +publish tries to publish n times.
+    scalaVersion := scala212,
+    crossScalaVersions := Seq(scala212),  //TODO +publish tries to publish n times.
     nativeLinkStubs := true
   )
 
 val commonSettings = Seq(
-  scalaVersion := "2.12.14",
-  crossScalaVersions := Seq("2.12.14", "2.13.6", "3.0.0")
+  scalaVersion := scala212,
+  crossScalaVersions := Seq(scala212, scala213, scala3)
 )
 lazy val JVM = base64.jvm
 lazy val JS = base64.project js
